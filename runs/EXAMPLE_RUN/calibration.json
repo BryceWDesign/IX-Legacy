@@ -1,0 +1,8 @@
+// File: runs/EXAMPLE_RUN/calibration.json
+{
+  "adc_ref_v": 3.3,
+  "adc_bits": 12,
+  "shunt_ohms_cap": 0.01,
+  "div_ratio_cap": 5.00,
+  "notes": "Example only. Replace with measured values."
+}
