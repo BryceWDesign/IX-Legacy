@@ -1,0 +1,107 @@
+# File: LICENSE
+IX-LEGACY EVALUATION LICENSE (SOURCE-AVAILABLE, INTERNAL EVALUATION + VALIDATION ONLY)
+Version 1.1
+
+Copyright (c) 2026 Bryce Lovell.
+All rights reserved.
+
+This Evaluation License (“License”) governs use of the IX-Legacy repository and all
+associated materials, including source code, documentation, schematics, diagrams,
+BOMs, CAD files, test procedures, and any other content provided in this repository
+(collectively, the “Materials”).
+
+1) DEFINITIONS
+“Licensor” means Bryce Lovell.
+“You” means the individual or entity exercising permissions under this License.
+“Evaluation Use” means non-production, internal activities strictly for the purpose of:
+(a) reviewing, compiling, running, testing, benchmarking, validating, auditing, and
+(b) making internal notes or internal modifications necessary to evaluate feasibility,
+performance, safety, and engineering characteristics.
+“Evaluation Results” means outputs and observations derived from Evaluation Use,
+including measurements, plots, logs, performance numbers, test reports, and conclusions,
+but excluding the Materials themselves and any substantial portion of the Materials.
+“Commercial Use” means any use that is primarily intended for, or results in:
+(i) sale, licensing, distribution, commercialization, monetization, or revenue;
+(ii) deployment in production environments (including field deployment beyond controlled
+evaluation), or embedding into products, services, systems, or platforms offered to others;
+(iii) providing a hosted service / SaaS / “as a service” offering using the Materials;
+(iv) manufacturing, offering for sale, or distributing hardware based on the Materials.
+
+2) GRANT OF RIGHTS (EVALUATION ONLY)
+Subject to full compliance with this License, Licensor grants You a non-exclusive,
+non-transferable, non-sublicensable, revocable right to:
+a) Access and use the Materials solely for Evaluation Use.
+b) Make a reasonable number of copies strictly as needed for Evaluation Use.
+c) Modify the Materials solely for Evaluation Use, provided such modifications remain
+internal and are not distributed or disclosed outside Your organization except as permitted
+by Section 4.
+
+3) RESTRICTIONS
+You MAY NOT, and You agree not to:
+a) Use the Materials for any Commercial Use.
+b) Deploy the Materials in production or operational environments.
+c) Distribute, publish, share, sublicense, sell, rent, lease, or otherwise make the Materials
+(or any portion) available to any third party, except as permitted in Section 4.
+d) Distribute or publish derivatives, forks, or modified versions of the Materials.
+e) Remove or alter copyright notices, authorship attributions, or this License.
+f) Use the Materials to develop or improve a competing product or system intended for
+Commercial Use without Licensor’s prior written permission.
+
+4) LIMITED SHARING FOR EVALUATION (EMPLOYEES, CONTRACTORS, AND VALIDATION LABS)
+You may disclose the Materials solely for Evaluation Use to:
+a) Your employees; and
+b) Your contractors, consultants, affiliates, or third-party validation/testing laboratories
+acting on Your behalf (“Authorized Evaluators”),
+ONLY if ALL of the following are true:
+1) Authorized Evaluators are bound by written confidentiality obligations at least as protective
+as this License; and
+2) Authorized Evaluators are restricted to Evaluation Use only; and
+3) You remain fully responsible for their compliance; and
+4) No further redistribution occurs beyond those Authorized Evaluators.
+
+5) PUBLICATION OF EVALUATION RESULTS (ALLOWED; MATERIALS NOT ALLOWED)
+You may publish or share Evaluation Results (e.g., performance numbers, plots, test reports)
+provided that:
+a) You do NOT include or disclose the Materials, source code, schematics, CAD, BOMs,
+or any substantial portion of the Materials; and
+b) You do NOT include enough detail to reconstruct the Materials; and
+c) You include attribution: “Evaluation performed on IX-Legacy by Bryce Lovell”; and
+d) You do not imply Licensor endorsement; and
+e) You comply with any separate NDA you may have with Licensor (if applicable).
+
+For clarity: publishing Evaluation Results does NOT grant any right to Commercial Use.
+
+6) FEEDBACK (OPTIONAL)
+If You provide feedback, suggestions, or test results (“Feedback”) to Licensor, You grant
+Licensor a perpetual, worldwide, royalty-free right to use that Feedback to improve the
+Materials. Feedback does not grant You any additional rights beyond this License.
+
+7) INTELLECTUAL PROPERTY; NO PATENT LICENSE
+The Materials are licensed, not sold. Licensor retains all right, title, and interest.
+No patent rights are granted under this License. No trademark rights are granted.
+
+8) CONFIDENTIALITY (RECOMMENDED)
+Licensor recommends treating the Materials as confidential. This License does not itself
+create an NDA, but nothing here prevents You and Licensor from executing an NDA or
+commercial agreement.
+
+9) TERMINATION
+This License is effective until terminated. It terminates automatically upon any breach.
+Upon termination, You must cease all use and destroy all copies of the Materials and any
+derivatives in Your possession or control, except to the extent retention is required by law.
+
+10) DISCLAIMER OF WARRANTY
+THE MATERIALS ARE PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. YOU ASSUME ALL RISK.
+
+11) LIMITATION OF LIABILITY
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, LICENSOR SHALL NOT BE LIABLE FOR ANY
+DAMAGES (DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY)
+ARISING OUT OF OR RELATED TO THE MATERIALS OR THIS LICENSE.
+
+12) PRODUCTION / COMMERCIAL LICENSE
+If You want to manufacture, deploy, distribute, or commercialize any system based on the
+Materials, You must obtain a separate written license from Licensor.
+
+END OF TERMS
