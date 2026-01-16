@@ -1,105 +1,104 @@
 # File: docs/modules/MODULE_B_VIBRATION.md
-# IX-Legacy — Module B: Vibration / Kinetic Harvester (v0)
+# IX-Legacy — Module B: Vibration / Kinetic Harvester (v1)
 
 ## 0) Purpose
 Module B converts external motion/vibration into electrical energy.
-This module is the “workhorse” in environments where vibration is continuously present
-(motors, pumps, vehicles, handheld motion).
+This module is the primary contributor when mounted to machinery/vehicles/structures with
+continuous vibration.
 
 ## 1) Physics basis (what is real)
 Vibration harvesters are real and fall into several families:
 - Electromagnetic (moving magnet through coil / moving coil in field)
 - Piezoelectric (strain generates charge)
-- Electrostatic / electret (variable capacitor; electret provides a permanent bias)
+- Electrostatic / electret (variable capacitor; electret provides permanent bias)
 - Triboelectric (contact/separation charge transfer)
 
-IX-Legacy v0 prioritizes **electromagnetic** + optional **electret** because they are robust,
-serviceable, and compatible with supercap buffering.
+IX-Legacy prioritizes **electromagnetic** harvesting for robustness and serviceability, with
+optional electret/piezo paths to broaden frequency response.
 
 Key constraint:
-- Output power scales with the environment’s acceleration spectrum and mechanical design.
-- If the unit is stationary in a low-vibration environment, power → near zero.
+- Output power scales with the environment’s acceleration spectrum and mechanical coupling.
+- Stationary device in low vibration ⇒ near-zero output.
 
-## 2) Sub-architectures supported (choose one or mix, but validate)
-### B1) Linear electromagnetic tube (“shake flashlight” class)
-- Magnet mass moves through coil, generating AC
-- Rectify → buffer → bus
+## 2) Design change vs. ZeroCell (the big fix)
+ZeroCell’s “many tubes + generic bridge rectifiers” wastes a large fraction of harvested energy.
+Module B v1 is defined around **low-loss rectification + ring strings + controlled combining**.
 
-### B2) Tuned resonant linear alternator (preferred upgrade path)
-- Spring-mass system tuned to dominant vibration frequency band
-- Increased stroke and energy capture at resonance
-- Requires mechanical stops and fatigue-aware design
+### 2.1 Ring-string topology (required)
+Instead of parallelizing 99 tubes directly, group tubes into rings/strings:
 
-### B3) Electret-based electrostatic harvester (optional parallel path)
-- Variable capacitor + electret film yields high voltage / very small current
-- Needs careful rectification and very low leakage
-- Useful for broadening frequency response and “static-like” behavior without external HV
-
-## 3) What we change vs. ZeroCell (critical improvements)
-B3.1 Stop using heavy silicon bridge rectifiers for low-power AC sources
-- They waste harvested energy as forward-drop heat.
-
-B3.2 Use low-loss rectification + per-string buffering
-- Each cluster (“ring”) should have its own rectification and buffer capacitor
-  so clusters don’t fight each other through the common bus.
-
-B3.3 Combine at DC through ideal-diode OR’ing
-- Prevents reverse currents and inter-string energy cancellation.
-
-B3.4 Tune the mechanics instead of brute-forcing tube count
-- More tubes without sufficient excitation dilutes motion and increases losses.
-
-## 4) Canonical “ring” topology (recommended for tube arrays)
-Group tubes into rings/strings:
-
-[Tubes in ring] → [Ring rectification (low-loss)] → [Ring buffer Cbuf] → [OR + Fuse] → Bus
+[Tubes in Ring j] → [Low-loss Rectification j] → [Ring Buffer Cbuf j] → [Ideal-OR + Fuse] → Bus
 
 Benefits:
-- minimizes cross-coupling losses
+- prevents strings from “fighting” each other
 - isolates faults
-- allows per-ring measurement and optimization
+- enables per-ring measurement and tuning
+- improves efficiency at low harvested voltages
 
-## 5) Electrical interface to IX-Legacy bus
-Required signals:
-- v_modB_v, i_modB_a at module boundary (pre-OR’ing)
-- optional per-ring signals (v_ring_j, i_ring_j) if instrumented
-- optional t_modB_c (rectifier hotspot)
+## 3) Rectification strategy (required)
+Module B must not use high-drop commodity silicon bridges as the default.
+Acceptable rectification families:
 
-Module must:
-- tolerate bus voltage range or include isolation
-- never backfeed (OR’ing required)
+A) **Synchronous / active bridge rectification** (preferred)
+- MOSFET-based active rectifier reduces effective forward drop
+- best when coil voltage/current are low and losses matter
 
-## 6) Mechanical architecture (enclosure-level, not “magic”)
-### 6.1 Cylinder pack (baseline)
+B) **Low-leakage Schottky bridge** (fallback)
+- acceptable for early prototypes or when synchronous is not yet implemented
+- must be justified with measured loss vs harvested power
+
+C) **Per-ring DC-DC with rectification** (optional)
+- ring AC → conditioned DC at an impedance setpoint
+- only allowed if the converter overhead is measured and included in energy accounting
+
+See `docs/09_LOW_LOSS_RECTIFICATION.md` for the non-negotiable posture:
+rectification must be chosen based on measured harvested signal levels.
+
+## 4) Electrical interface to IX-Legacy bus
+### 4.1 Module boundary (required)
+- v_modB_v, i_modB_a measured **pre-OR** at the module output boundary into the bus
+- t_modB_c (recommended) at rectifier/OR hotspot
+
+### 4.2 Per-ring boundary (strongly recommended)
+For each ring j:
+- v_ring{j}_v, i_ring{j}_a measured **after ring rectification** and before ring OR’ing
+This is the fastest way to identify an underperforming ring and avoid scaling mistakes.
+
+### 4.3 Backfeed rule
+- No reverse current from bus → ring or bus → tube coils.
+- Enforced by ideal-OR plus ring isolation; validated by the backfeed test in the protocol.
+
+## 5) Mechanical architecture (enclosure-level)
+### 5.1 Cylinder pack (baseline)
 - Tubes distributed evenly around perimeter
 - Internal elastomer isolation to shape a predictable “shake mode”
 - Mechanical stops to protect magnets/coils under shock
 
-### 6.2 Resonant mounts (upgrade)
-- A spring-mass mount tuned to known vibration frequencies
-- Can be implemented per-ring to create multiple resonant peaks (broadband capture)
+### 5.2 Resonant mounts (upgrade path)
+- Spring-mass tuning to the dominant vibration band
+- Multiple rings may be tuned differently to broaden capture bandwidth
+- Must be validated for fatigue and shock survivability
 
-Rule: any resonance design must be validated for fatigue and shock survivability.
-
-## 7) Test & verification (required)
-### 7.1 Environment description
+## 6) Test & verification (required)
+### 6.1 Environment description
 Minimum:
 - qualitative vibration source description
 Recommended:
-- approximate dominant frequency band and acceleration amplitude
+- dominant frequency band and approximate acceleration
 
-### 7.2 Measurement boundaries (required)
-- v_modB_v, i_modB_a (pre-OR)
-- v_cap_v, i_cap_a
-- rail outputs if conversion enabled
+### 6.2 Measurement boundaries (required)
+- per-ring or module boundary power into bus (v/i)
+- storage boundary (v_cap, i_cap, t_cap)
+- rails boundary if conversion enabled
 
-### 7.3 Pass criteria
-- Net positive energy delivered into storage over defined window
-- No backfeed behavior during connect/disconnect
-- Thermal rise within ThermalGuardian rules
+### 6.3 Pass criteria
+- net positive energy delivered into storage over defined window
+- no backfeed during connect/disconnect events
+- rectifier/OR thermal rise within ThermalGuardian rules
+- reconciliation closes: E_in ≈ ΔE_cap + E_out + losses
 
-## 8) Failure modes to design against
-- Rectifier losses dominate at low voltages → use low-loss rectification
-- Mechanical wear/fatigue → robust guides, stops, materials
+## 7) Failure modes (design against)
+- Rectifier losses dominate at low voltage → synchronous rectification or proven Schottky selection
 - Coil heating at high excitation → thermal sensing and derating
-- Noise coupling to measurement → filtering + correct boundary placement
+- Mechanical wear/fatigue → robust guides, stops, serviceability
+- Wiring resistance dominates → short/thick conductors, per-ring aggregation
